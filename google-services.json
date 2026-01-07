@@ -1,0 +1,53 @@
+{
+  "project_info": {
+    "project_number": "333197097564",
+    "project_id": "omrgbmk-np",
+    "storage_bucket": "omrgbmk-np.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:333197097564:android:d7ed84cc422f064e538499",
+        "android_client_info": {
+          "package_name": "np.bmk.dailyapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "333197097564-h1g6k385140umifsrhlpt1b4hjqnp84e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "np.bmk.dailyapp",
+            "certificate_hash": "e3bdeb8dcd749d34198a67460a81184deb016b02"
+          }
+        },
+        {
+          "client_id": "333197097564-u9opc2iesvj767qv6k3fc04n79qnq7g3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0MNNNUGxLN3fP0l25FXCrmR_1ewT_wXY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "333197097564-u9opc2iesvj767qv6k3fc04n79qnq7g3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1",
+  "app_version": {
+    "latest_version": "1.0.2",
+    "min_version": "1.0.1",
+    "download_url": "http://192.168.0.9:8080/bmk.apk",
+    "force_update": false
+  }
+}

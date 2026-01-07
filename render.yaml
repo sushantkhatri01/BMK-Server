@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: bmk-server
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn server:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: BMK_SQLITE_PATH
+        value: bmk.db
+      - key: PYTHON_VERSION
+        value: 3.11.0
