@@ -1,6 +1,6 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, RedirectResponse
 import shutil
 import os
 from sqlalchemy import create_engine, Column, Integer, String, Float, DateTime
@@ -54,10 +54,9 @@ def get_guidelines():
 # APK download endpoint (supports GET and HEAD for browser installs)
 @app.api_route("/download_app", methods=["GET", "HEAD"])
 def download_app():
-    apk_path = os.path.join(FILES_DIR, "bmk.apk")
-    if not os.path.isfile(apk_path):
-        raise HTTPException(status_code=404, detail="APK not found.")
-    return FileResponse(apk_path, media_type="application/vnd.android.package-archive", filename="bmk.apk")
+    # Redirect to GitHub Release for APK download
+    github_release_url = "https://github.com/sushantkhatri01/BMK-Server/releases/download/v1.0.0/bmk.apk"
+    return RedirectResponse(url=github_release_url, status_code=302)
 
 # Enable CORS for your Flutter app (adjust origins as needed)
 app.add_middleware(
