@@ -142,14 +142,12 @@ def debug_files():
     }
 
 
-# Download APK (GET + HEAD for stores/links)
+# Download APK - redirect to GitHub Release
 @app.api_route("/download_app", methods=["GET", "HEAD"])
 def download_app():
-    apk_path = os.path.join(FILES_DIR, "bmk.apk")
-    if not os.path.isfile(apk_path):
-        raise HTTPException(status_code=404, detail="APK not found")
-    from fastapi.responses import FileResponse  # Local import to avoid circulars at module load
-    return FileResponse(apk_path, media_type="application/vnd.android.package-archive", filename="bmk.apk")
+    from fastapi.responses import RedirectResponse
+    github_release_url = "https://github.com/sushantkhatri01/BMK-Server/releases/download/v1.0.2/BMK.apk"
+    return RedirectResponse(url=github_release_url, status_code=302)
 
 
 # App version metadata for in-app updater
@@ -160,14 +158,14 @@ def app_version():
         "latest_version": "1.0.2",
         "current_version": "1.0.1",
         "min_required_version": "1.0.0",
-        "download_url": f"{base_url}/download_app",
+        "download_url": "https://github.com/sushantkhatri01/BMK-Server/releases/download/v1.0.2/BMK.apk",
         "force_update": False,
-        "update_message": "New features and improvements available!",
+        "update_message": "Updated with cloud URLs - download from GitHub Release",
         "changelog": [
+            "All URLs now point to Render cloud server",
+            "APK hosted on GitHub Releases",
             "Added in-app update system",
-            "Added remote feature flags",
             "Performance improvements",
-            "Bug fixes",
         ],
     }
 
