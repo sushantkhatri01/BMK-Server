@@ -72,6 +72,29 @@ app.add_middleware(
 def read_root():
     return {"message": "BMK server is running!"}
 
+@app.get("/debug/files")
+def debug_files():
+    """Debug endpoint to check file system"""
+    try:
+        files_exist = os.path.exists(FILES_DIR)
+        files_list = os.listdir(FILES_DIR) if files_exist else []
+        apk_path = os.path.join(FILES_DIR, "bmk.apk")
+        apk_exists = os.path.isfile(apk_path)
+        apk_size = os.path.getsize(apk_path) if apk_exists else 0
+        
+        return {
+            "files_dir": FILES_DIR,
+            "files_dir_exists": files_exist,
+            "files_in_dir": files_list,
+            "apk_path": apk_path,
+            "apk_exists": apk_exists,
+            "apk_size_mb": round(apk_size / 1024 / 1024, 2) if apk_exists else 0,
+            "current_dir": os.getcwd(),
+            "dir_contents": os.listdir(os.getcwd())
+        }
+    except Exception as e:
+        return {"error": str(e)}
+
 # Secure config loading example
 
 # Use environment variable for DB path, default to SQLite file
