@@ -112,7 +112,7 @@ class Worker(BaseModel):
 def root():
     return {
         "message": "🤝 BMK API - Connecting Hirers & Workers in Nepal",
-        "version": "1.0.0",
+        "version": "1.0.2",
         "endpoints": {
             "users": "/users",
             "tasks": "/tasks",
@@ -142,8 +142,8 @@ def debug_files():
     }
 
 
-# Download APK
-@app.get("/download_app")
+# Download APK (GET + HEAD for stores/links)
+@app.api_route("/download_app", methods=["GET", "HEAD"])
 def download_app():
     apk_path = os.path.join(FILES_DIR, "bmk.apk")
     if not os.path.isfile(apk_path):
