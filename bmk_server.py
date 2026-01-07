@@ -23,6 +23,9 @@ app.add_middleware(
 
 # Data storage (JSON file for persistence)
 DATA_FILE = "bmk_data.json"
+# Files directory for APK and downloads
+FILES_DIR = os.path.join(os.path.dirname(__file__), "files")
+os.makedirs(FILES_DIR, exist_ok=True)
 
 def load_data():
     if os.path.exists(DATA_FILE):
@@ -117,6 +120,55 @@ def root():
             "search": "/search",
             "stats": "/stats"
         }
+    }
+
+
+# Debug endpoint to inspect deployed filesystem
+@app.get("/debug/files")
+def debug_files():
+    apk_path = os.path.join(FILES_DIR, "bmk.apk")
+    files_exist = os.path.exists(FILES_DIR)
+    apk_exists = os.path.isfile(apk_path)
+    apk_size = os.path.getsize(apk_path) if apk_exists else 0
+    return {
+        "files_dir": FILES_DIR,
+        "files_dir_exists": files_exist,
+        "files_in_dir": os.listdir(FILES_DIR) if files_exist else [],
+        "apk_path": apk_path,
+        "apk_exists": apk_exists,
+        "apk_size_mb": round(apk_size / 1024 / 1024, 2) if apk_exists else 0,
+        "cwd": os.getcwd(),
+        "cwd_files": os.listdir(os.getcwd()),
+    }
+
+
+# Download APK
+@app.get("/download_app")
+def download_app():
+    apk_path = os.path.join(FILES_DIR, "bmk.apk")
+    if not os.path.isfile(apk_path):
+        raise HTTPException(status_code=404, detail="APK not found")
+    from fastapi.responses import FileResponse  # Local import to avoid circulars at module load
+    return FileResponse(apk_path, media_type="application/vnd.android.package-archive", filename="bmk.apk")
+
+
+# App version metadata for in-app updater
+@app.get("/app/version")
+def app_version():
+    base_url = os.environ.get("APP_BASE_URL", "https://bmk-server.onrender.com")
+    return {
+        "latest_version": "1.0.2",
+        "current_version": "1.0.1",
+        "min_required_version": "1.0.0",
+        "download_url": f"{base_url}/download_app",
+        "force_update": False,
+        "update_message": "New features and improvements available!",
+        "changelog": [
+            "Added in-app update system",
+            "Added remote feature flags",
+            "Performance improvements",
+            "Bug fixes",
+        ],
     }
 
 @app.get("/health")
