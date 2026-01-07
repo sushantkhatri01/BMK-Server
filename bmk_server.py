@@ -142,12 +142,12 @@ def debug_files():
     }
 
 
-# Download APK - redirect to GitHub Release
-@app.api_route("/download_app", methods=["GET", "HEAD"])
+# Download APK - redirect to Google Drive
+@app.get("/download_app")
 def download_app():
     from fastapi.responses import RedirectResponse
-    github_release_url = "https://github.com/sushantkhatri01/BMK-Server/releases/download/v1.0.2/BMK.apk"
-    return RedirectResponse(url=github_release_url, status_code=302)
+    google_drive_url = "https://drive.google.com/uc?export=download&id=1sZky-lc3_iYagcez_lIoGcTmALl38Ta6"
+    return RedirectResponse(url=google_drive_url, status_code=302)
 
 
 # App version metadata for in-app updater
@@ -158,12 +158,12 @@ def app_version():
         "latest_version": "1.0.2",
         "current_version": "1.0.1",
         "min_required_version": "1.0.0",
-        "download_url": "https://github.com/sushantkhatri01/BMK-Server/releases/download/v1.0.2/BMK.apk",
+        "download_url": f"{base_url}/download_app",
         "force_update": False,
-        "update_message": "Updated with cloud URLs - download from GitHub Release",
+        "update_message": "Updated with cloud URLs - APK hosted on Google Drive",
         "changelog": [
             "All URLs now point to Render cloud server",
-            "APK hosted on GitHub Releases",
+            "APK hosted on Google Drive for reliable downloads",
             "Added in-app update system",
             "Performance improvements",
         ],
