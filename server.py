@@ -715,11 +715,15 @@ def get_stats(db: Session = Depends(get_db)):
 # App version check endpoint
 @app.get("/app/version")
 def check_app_version():
+    # Get the request host to dynamically determine the download URL
+    # This allows it to work on both Render and local environments
+    base_url = os.environ.get("APP_BASE_URL", "https://bmk-server.onrender.com")
+    
     return {
         "latest_version": "1.0.2",
         "current_version": "1.0.1",
         "min_required_version": "1.0.0",
-        "download_url": "http://192.168.0.9:8080/bmk.apk",
+        "download_url": f"{base_url}/download_app",
         "force_update": False,  # Set True to force all users to update
         "update_message": "New features and improvements available!",
         "changelog": [
